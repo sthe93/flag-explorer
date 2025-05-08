@@ -1,0 +1,76 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  backend:
+    name: Backend CI
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+      
+    - uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+        
+    - name: Install backend dependencies
+      working-directory: ./backend
+      run: npm ci
+      
+    - name: Run backend tests
+      timeout-minutes: 5
+      working-directory: ./backend
+      run: npm test
+      
+    - name: Build backend
+      working-directory: ./backend
+      run: npm run build  # Ensure this exists in package.json
+
+  frontend:
+    name: Frontend CI
+    needs: backend
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+      
+    - uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+          
+    - name: Install frontend dependencies
+      working-directory: ./frontend
+      run: npm ci
+      
+    - name: Run frontend tests
+      working-directory: ./frontend
+      run: npm test -- --watchAll=false --coverage
+      
+    - name: Build frontend
+      working-directory: ./frontend
+      run: npm run build
+        
+    - name: Upload coverage report
+      if: always()  # Upload even if tests fail
+      uses: actions/upload-artifact@v3
+      with:
+        name: coverage-report
+        path: frontend/coverage
+
+  # deploy:  # Either remove or implement properly
+  #   name: Deploy
+  #   needs: [backend, frontend]
+  #   runs-on: ubuntu-latest
+  #   if: github.ref == 'refs/heads/main'
+  #   environment: production
+  #   
+  #   steps:
+  #   - uses: actions/checkout@v3
+  #   - run: echo "Add real deployment commands here"
