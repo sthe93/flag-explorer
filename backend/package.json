@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon src/app.js",
-    "lint": "eslint . --ext .ts,.tsx,.js,.jsx",
+    "lint": "eslint . --ext .js",
     "test": "jest --coverage",
     "test:watch": "jest --watch",
     "prepare": "echo 'Skipping prepare hook during CI'",  
