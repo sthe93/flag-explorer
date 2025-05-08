@@ -30,7 +30,7 @@ jobs:
       run: npm test
     
 
- frontend:
+  frontend:
     name: Frontend CI
     needs: backend
     runs-on: ubuntu-latest
@@ -38,12 +38,6 @@ jobs:
     steps:
     - uses: actions/checkout@v4
       
-    - name: Cache node_modules
-      uses: actions/cache@v3
-      with:
-        path: frontend/node_modules
-        key: ${{ runner.os }}-frontend-${{ hashFiles('frontend/package-lock.json') }}
-        
     - uses: actions/setup-node@v4
       with:
         node-version: '20'
@@ -62,8 +56,8 @@ jobs:
       run: npm run build
         
     - name: Upload coverage report
-      if: always()
-      uses: actions/upload-artifact@v4
+      if: always()  # Upload even if tests fail
+      uses: actions/upload-artifact@v4 
       with:
         name: coverage-report
         path: frontend/coverage
