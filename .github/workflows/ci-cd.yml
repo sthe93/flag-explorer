@@ -28,12 +28,7 @@ jobs:
       timeout-minutes: 5
       working-directory: ./backend
       run: npm test
-      
-      - name: Verify backend structure
-      working-directory: ./backend
-      run: |
-        echo "JavaScript project - build step not required"
-        ls -la  # Optional verification  
+    
 
   frontend:
     name: Frontend CI
