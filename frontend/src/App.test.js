@@ -1,8 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import App from './App';
 
-test('renders app container', () => {
-  render(<App />);
-  const appElement = screen.getByTestId('app-container');
-  expect(appElement).toBeInTheDocument();
+test('renders app with navigation', () => {
+    render(<App />);
+    expect(screen.getByText(/flag explorer/i)).toBeInTheDocument();
 });
