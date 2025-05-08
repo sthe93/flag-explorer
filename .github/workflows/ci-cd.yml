@@ -30,37 +30,43 @@ jobs:
       run: npm test
     
 
-  frontend:
-    name: Frontend CI
-    needs: backend
-    runs-on: ubuntu-latest
-    
-    steps:
-    - uses: actions/checkout@v4
-      
-    - uses: actions/setup-node@v4
-      with:
-        node-version: '20'
-        cache: 'npm'
-          
-    - name: Install frontend dependencies
-      working-directory: ./frontend
-      run: npm ci
-      
-    - name: Run frontend tests
-      working-directory: ./frontend
-      run: npm test -- --watchAll=false --coverage
-      
-    - name: Build frontend
-      working-directory: ./frontend
-      run: npm run build
+      frontend:
+        name: Frontend CI
+        needs: backend
+        runs-on: ubuntu-latest
         
-    - name: Upload coverage report
-      if: always()  # Upload even if tests fail
-      uses: actions/upload-artifact@v3
-      with:
-        name: coverage-report
-        path: frontend/coverage
+        steps:
+        - uses: actions/checkout@v4
+          
+        - name: Cache node_modules
+          uses: actions/cache@v3
+          with:
+            path: frontend/node_modules
+            key: ${{ runner.os }}-frontend-${{ hashFiles('frontend/package-lock.json') }}
+            
+        - uses: actions/setup-node@v4
+          with:
+            node-version: '20'
+            cache: 'npm'
+              
+        - name: Install frontend dependencies
+          working-directory: ./frontend
+          run: npm ci
+          
+        - name: Run frontend tests
+          working-directory: ./frontend
+          run: npm test -- --watchAll=false --coverage
+          
+        - name: Build frontend
+          working-directory: ./frontend
+          run: npm run build
+            
+        - name: Upload coverage report
+          if: always()
+          uses: actions/upload-artifact@v4
+          with:
+            name: coverage-report
+            path: frontend/coverage
 
   # deploy:  # Either remove or implement properly
   #   name: Deploy
