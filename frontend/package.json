@@ -14,8 +14,8 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-     "test": "react-scripts test --transformIgnorePatterns \"node_modules/(?!react-router-dom)/\" --watchAll=false --coverage",
-  "test:ci": "npm test -- --ci --reporters=default --reporters=jest-junit",
+ "test": "react-scripts test --transformIgnorePatterns \"node_modules/(?!react-router-dom)/\" --watchAll=false",
+  "test:ci": "npm test -- --coverage --ci --testResultsProcessor=jest-junit",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -39,6 +39,7 @@
   "devDependencies": {
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
-    "@testing-library/user-event": "^14.6.1"
+    "@testing-library/user-event": "^14.6.1",
+    "jest-junit": "^16.0.0"
   }
 }

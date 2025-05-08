@@ -52,6 +52,13 @@ jobs:
       run: npm run test:ci
       env:
         CI: true
+     
+    - name: Upload test results
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+          name: frontend-test-results
+          path: frontend/junit.xml
       
     - name: Build frontend
       working-directory: ./frontend
