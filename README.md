@@ -21,5 +21,5 @@ A full-stack application to explore country flags and details.
 ### Installation 
 1. Clone the repository: 
    ```bash 
-   git clone https://github.com/your-username/flag-explorer.git 
+   git clone https://github.com/sthe93/flag-explorer.git 
    ``` 
