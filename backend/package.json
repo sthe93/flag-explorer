@@ -6,11 +6,11 @@
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon src/app.js",
-    "lint": "eslint . --ext .js",
+    "lint": "eslint . --ext .ts,.tsx,.js,.jsx",
     "test": "jest --coverage",
     "test:watch": "jest --watch",
     "prepare": "echo 'Skipping prepare hook during CI'",  
-    "build": "npm run lint && tsc"
+    "build": "tsc"
   },
   "dependencies": {
     "axios": "^1.6.7",

@@ -20,9 +20,21 @@ jobs:
         cache: 'npm'
         cache-dependency-path: 'backend/package-lock.json'
         
+    - name: Cache node_modules
+      uses: actions/cache@v3
+      with:
+        path: backend/node_modules
+        key: ${{ runner.os }}-backend-${{ hashFiles('backend/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-backend-
+          
     - name: Install backend dependencies
       working-directory: ./backend
-      run: npm ci 
+      run: npm ci
+      
+    - name: Run linting
+      working-directory: ./backend
+      run: npm run lint
       
     - name: Run backend tests
       timeout-minutes: 5
@@ -31,7 +43,15 @@ jobs:
       
     - name: Build backend
       working-directory: ./backend
-      run: npm run build  
+      run: |
+        npm run build
+        ls -la dist/  # Verify build output
+        
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: backend-build
+        path: backend/dist
 
   frontend:
     name: Frontend CI
@@ -45,6 +65,7 @@ jobs:
       with:
         node-version: '20'
         cache: 'npm'
+        cache-dependency-path: 'frontend/package-lock.json'
           
     - name: Install frontend dependencies
       working-directory: ./frontend
@@ -59,19 +80,8 @@ jobs:
       run: npm run build
         
     - name: Upload coverage report
-      if: always()  # Upload even if tests fail
+      if: always()
       uses: actions/upload-artifact@v3
       with:
         name: coverage-report
         path: frontend/coverage
-
-  # deploy:  # Either remove or implement properly
-  #   name: Deploy
-  #   needs: [backend, frontend]
-  #   runs-on: ubuntu-latest
-  #   if: github.ref == 'refs/heads/main'
-  #   environment: production
-  #   
-  #   steps:
-  #   - uses: actions/checkout@v3
-  #   - run: echo "Add real deployment commands here"
