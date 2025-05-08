@@ -14,8 +14,8 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
- "test": "react-scripts test --transformIgnorePatterns \"node_modules/(?!react-router-dom)/\" --watchAll=false",
-  "test:ci": "npm test -- --coverage --ci --testResultsProcessor=jest-junit",
+"test": "react-scripts test --transformIgnorePatterns \"node_modules/(?!react-router-dom)/\" --watchAll=false",
+  "test:ci": "npm test -- --coverage --ci",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
