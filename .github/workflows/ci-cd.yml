@@ -22,7 +22,7 @@ jobs:
         
     - name: Install backend dependencies
       working-directory: ./backend
-      run: npm ci --omit=dev
+      run: npm ci 
       
     - name: Run backend tests
       timeout-minutes: 5
