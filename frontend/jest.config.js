@@ -1,6 +1,16 @@
-// frontend/jest.config.js
+// jest.config.js
 module.exports = {
-    collectCoverage: true,
-    coverageReporters: ['text', 'lcov'],
-    testResultsProcessor: 'jest-junit'
-  };
+  resolver: './jest.resolver.js',
+  testEnvironment: 'jsdom',
+  setupFilesAfterEnv: ['<rootDir>/src/setupTests.js'],
+  moduleNameMapper: {
+    '\\.(css|less|scss|sass)$': 'identity-obj-proxy'
+  },
+  transformIgnorePatterns: [
+    '/node_modules/(?!react-router-dom)/'
+  ],
+  moduleDirectories: [
+    'node_modules',
+    'src'
+  ]
+};
